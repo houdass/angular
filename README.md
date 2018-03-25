@@ -67,16 +67,16 @@ Angular is a Javascript framework which allows you to create reactive Single-pag
 
 # Component selectors
 
-- selector: 'app-servers' => <app-servers></app-servers>
-- selector: '.app-servers' => <div class="app-servers"></div>
-- selector: '[app-servers]' => <div app-servers></div>
+- selector: 'app-servers' =&gt; &lt;app-servers&gt;&lt;/app-servers&gt;
+- selector: '.app-servers' =&gt; &lt;div class="app-servers"&gt;&lt;/div&gt;
+- selector: '[app-servers]' =&gt; &lt;div app-servers&gt;&lt;/div&gt;
 
 # Databinding
 - String interpolation {{ data }}
-- Property binding [property]="data" for example <button [disabled]="isDisabled"> ...
+- Property binding [property]="data" for example &lt;button [disabled]="isDisabled"&gt; ...
 - Event Binding (event)="callback()"
 - Two-way binding (banana in the box) [(data)]
 NOTE : 
-    - <p [innerText]="data"></p> is equal to <p>{{ data }}</p>
-    - String interpolation => used to print/output some data
-    - Property binding => Change some property
+    - &lt;p [innerText]="data"&gt;&lt;/p&gt; is equal to &lt;p&gt;{{ data }}&lt;/p&gt;
+    - String interpolation =&gt; used to print/output some data
+    - Property binding =&gt; Change some property
