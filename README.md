@@ -73,10 +73,20 @@ Angular is a Javascript framework which allows you to create reactive Single-pag
 
 # Databinding
 - String interpolation {{ data }}
-- Property binding [property]="data" for example &lt;button [disabled]="isDisabled"&gt; ...
-- Event Binding (event)="callback()"
+- Property binding [property]="data" or bind-property="data for example &lt;button [disabled]="isDisabled"&gt; ...
+- Event Binding (event)="callback()" or on-click="callback()"
 - Two-way binding (banana in the box) [(data)]
-NOTE : 
+- NOTE : 
     - &lt;p [innerText]="data"&gt;&lt;/p&gt; is equal to &lt;p&gt;{{ data }}&lt;/p&gt;
     - String interpolation =&gt; used to print/output some data
     - Property binding =&gt; Change some property
+
+# *ngIf with an else condition
+- &lt;p *ngIf="isVisible; else noCondition"&gt;My message if true&lt;/p&gt;
+- &lt;ng-template #noCondition&gt;
+    &lt;p&gt;My message if false&lt;p&gt;
+  &lt;/ng-template&gt;
+  
+# *ngFor (Getting the index)
+- &lt;p *ngFor="let item of items; let i = index"&gt;{{i}} - {{item.name}}&lt;/p&gt;
+- Or, &lt;p *ngFor="let item of items; index as i"&gt;{{i}} - {{item.name}}&lt;/p&gt;

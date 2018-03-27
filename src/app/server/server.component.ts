@@ -5,4 +5,11 @@ import { Component } from '@angular/core';
   templateUrl: './server.component.html'
 })
 export class ServerComponent {
+  isDisabled = true;
+  message = 'init';
+  tab = ['a', 'b', 'c']
+
+  clickme(event: any) {
+    this.message = event.target.value;
+  }
 }
