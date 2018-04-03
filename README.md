@@ -42,6 +42,11 @@ Angular is a Javascript framework which allows you to create reactive Single-pag
 - ng new my-dream-app --style=scss|sass
 - cd my-dream-app
 - ng serve
+- https://www.sitepoint.com/ultimate-angular-cli-reference/
+
+# Hot Module Replacement with angular/cli
+https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae4a9c
+
 
 # Structure
 
@@ -55,7 +60,7 @@ Angular is a Javascript framework which allows you to create reactive Single-pag
 - Pipes
 - Http
 - Authentication
-- Optimizations @ NgModules
+- Optimizations & NgModules
 - Deployment
 - Animation & Testing
 
@@ -67,26 +72,29 @@ Angular is a Javascript framework which allows you to create reactive Single-pag
 
 # Component selectors
 
-- selector: 'app-servers' =&gt; &lt;app-servers&gt;&lt;/app-servers&gt;
-- selector: '.app-servers' =&gt; &lt;div class="app-servers"&gt;&lt;/div&gt;
-- selector: '[app-servers]' =&gt; &lt;div app-servers&gt;&lt;/div&gt;
+- selector: `'app-servers'` => `<app-servers></app-servers>`
+- selector: `'.app-servers'` => `<div class="app-servers"></div>`
+- selector: `'[app-servers]'` => `<div app-servers></div>`
 
 # Databinding
 - String interpolation {{ data }}
-- Property binding [property]="data" or bind-property="data for example &lt;button [disabled]="isDisabled"&gt; ...
-- Event Binding (event)="callback()" or on-click="callback()"
-- Two-way binding (banana in the box) [(data)]
+- Property binding `[property]="data"` or `bind-property="data"` for example `<button [disabled]="isDisabled"> ...`
+- Event Binding `(event)="callback()"` or `on-click="callback()"`
+- Two-way binding (banana in the box) `[(data)]`
 - NOTE : 
-    - &lt;p [innerText]="data"&gt;&lt;/p&gt; is equal to &lt;p&gt;{{ data }}&lt;/p&gt;
-    - String interpolation =&gt; used to print/output some data
-    - Property binding =&gt; Change some property
+    - `<p [innerText]="data"></p>` is equal to `<p>{{ data }}</p>`
+    - String interpolation => used to print/output some data
+    - Property binding => Change some property
+    - `<input name="username" [(ngModel)]="user.username">` is equal to `
+  <input name="username" [ngModel]="user.username" (ngModelChange)="user.username = $event
+  ">`
 
 # *ngIf with an else condition
-- &lt;p *ngIf="isVisible; else noCondition"&gt;My message if true&lt;/p&gt;
-- &lt;ng-template #noCondition&gt;
-    &lt;p&gt;My message if false&lt;p&gt;
-  &lt;/ng-template&gt;
+- `<p *ngIf="isVisible; else noCondition">My message if true</p>`
+- `<ng-template #noCondition><p>My message if false<p></ng-template>
   
 # *ngFor (Getting the index)
-- &lt;p *ngFor="let item of items; let i = index"&gt;{{i}} - {{item.name}}&lt;/p&gt;
-- Or, &lt;p *ngFor="let item of items; index as i"&gt;{{i}} - {{item.name}}&lt;/p&gt;
+- `<p *ngFor="let item of items; let i = index">{{i}} - {{item.name}}</p>`
+- Or, `<p *ngFor="let item of items; index as i">{{i}} - {{item.name}}</p>`
+
+
