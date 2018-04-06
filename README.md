@@ -85,8 +85,8 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
     - `<p [innerText]="data"></p>` is equal to `<p>{{ data }}</p>`
     - String interpolation => used to print/output some data
     - Property binding => Change some property
-    - `<input name="username" [(ngModel)]="user.username">` is equal to `
-  <input name="username" [ngModel]="user.username" (ngModelChange)="user.username = $event
+    - `<input name="name" [(ngModel)]="user.name">` is equal to `
+  <input name="name" [ngModel]="user.name" (ngModelChange)="user.name = $event
   ">`
 
 # *ngIf with an else condition
@@ -103,9 +103,75 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 - **encapsulation: ViewEncapsulation.None** => Don't provide any template or style encapsulation.
 
 # Template reference variables
-- @ViewChild
-    * `<p #text>Hello World</p>` or `<p ref-text>Hello World</p>`
-    * `@ViewChild('text') text: ElementRef;` 
-    * `ngAfterViewInit() {
-         console.log(this.text.nativeElement.textContent);
+* @ViewChild
+    * .html file 
+      * `<p #text>Hello World</p>` or `<p ref-text>Hello World</p>`
+    * .ts file 
+      * `@ViewChild('viewExample') text: ElementRef;` <br> 
+      * `ngAfterViewInit() {
+         console.log(this.viewExample.nativeElement.textContent);
        }`
+       
+* @ContentChild
+     * .html file 
+       * `<p #text>Hello World</p>` or `<p ref-text>Hello World</p>`
+     * .ts file 
+       * `@ContentChild('contentExample') text: ElementRef;` <br> 
+       * `ngAfterContentInit() {
+          console.log(this.contentExample.nativeElement.textContent);
+        }`
+
+# Hooks
+  * ngOnChanges()	
+      Respond when Angular (re)sets data-bound input properties. The method receives a SimpleChanges object of current and previous property values.
+      Called before ngOnInit() and whenever one or more data-bound input properties change.
+    
+  * ngOnInit()	
+      Initialize the directive/component after Angular first displays the data-bound properties and sets the directive/component's input properties.
+      Called once, after the first ngOnChanges().
+      
+  * ngDoCheck()	
+      Detect and act upon changes that Angular can't or won't detect on its own.
+      Called during every change detection run, immediately after ngOnChanges() and ngOnInit().
+      
+  * ngAfterContentInit()	
+      Respond after Angular projects external content into the component's view / the view that a directive is in.
+      Called once after the first ngDoCheck().
+      
+  * ngAfterContentChecked()	
+      Respond after Angular checks the content projected into the directive/component.
+      Called after the ngAfterContentInit() and every subsequent ngDoCheck().
+      
+  * ngAfterViewInit()	
+      Respond after Angular initializes the component's views and child views / the view that a directive is in.
+      Called once after the first ngAfterContentChecked().
+      
+  * ngAfterViewChecked()	
+      Respond after Angular checks the component's views and child views / the view that a directive is in.
+      Called after the ngAfterViewInit and every subsequent ngAfterContentChecked().
+      
+  * ngOnDestroy()	
+      Cleanup just before Angular destroys the directive/component. Unsubscribe Observables and detach event handlers to avoid memory leaks.
+      Called just before Angular destroys the directive/component.
+      
+# Directives
+  * @Directive({
+      selector: '[appBasicHighlight]'
+    })
+  * Using ElementRef (`<p appBasicHighlight>App Basic Highlight Example</p>`)
+    * constructor(private elementRef: ElementRef) {}
+        
+      ngOnInit() {
+        this.elementRef.nativeElement.style.backgroundColor = 'green';
+      }
+    * Using Renderer (`<p appBetterHighlight>App Better Highlight Example</p>`)
+      * constructor(private elRef: ElementRef, private renderer: Renderer2) {}
+      * ngOnInit() {
+          this.renderer.setStyle(this.elRef.nativeElement, 'backgroundColor', 'blue');
+        }
+    * Using @HostBinding
+      * @HostBinding('style.backgroundColor') backgroundColor;
+      * ngOnInit() {
+          this.backgroundColor = this.defaultColor;
+        }    
+    

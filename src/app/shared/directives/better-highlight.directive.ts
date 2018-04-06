@@ -9,8 +9,7 @@ export class BetterHighlightDirective implements OnInit {
   @Input() highlightColor = 'red';
   @HostBinding('style.backgroundColor') backgroundColor;
 
-  constructor() {
-  }
+  constructor() {}
 
   // <p appBetterHighlight>App Better Highlight Example</p>
   // <p appBetterHighlight [defaultColor]="'transparent'" [highlightColor]="'blue'">App Better Highlight Example</p>
