@@ -179,7 +179,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
         mouseenter(eventData: Event) {
           this.backgroundColor = this.highlightColor;
         }
-    * @Input
+  * @Input
       * @Input() highlightColor = 'transparent';
       * `<p appBetterHighlight [highlightColor]="'blue'">App Better Highlight Example</p>`
       * or, `<p appBetterHighlight highlightColor="blue">App Better Highlight Example</p>`  
