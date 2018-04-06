@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  user = { name: 'Youness' };
-  title = 'Angular';
-  serverElements = [{type: 'server', name: 'Testserver', content: 'Just a test!'}];
+  loadedFeature = 'recipe';
+  isHidden = false;
+  value = 1;
+
+  onNavigate(feature: string) {
+    this.loadedFeature = feature;
+  }
 }

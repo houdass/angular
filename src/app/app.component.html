@@ -1,20 +1,29 @@
-<app-header></app-header>
+<app-header (featureSelected)="onNavigate($event)"></app-header>
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
-      <app-recipes [user]="user" *ngIf="!isHidden">
-        <!-- <button class="btn btn-warning" #contentExample>{{ 'Content' }}</button> -->
+      <app-recipes *ngIf="loadedFeature === 'recipe'">
         <p #contentExample>
-          <strong *ngIf="title">{{ title }}</strong>
+          <strong>{{ loadedFeature }}</strong>
         </p>
       </app-recipes>
-      <app-shopping-list></app-shopping-list>
+      <app-shopping-list *ngIf="loadedFeature === 'shopping-list'"></app-shopping-list>
     </div>
   </div>
 </div>
-<hr>
-<input [(ngModel)]="user.name">
-<h3>From App : {{ user.name }}</h3>
-<button (click)="user = { name: 'app' }">OnChanges</button>
-<button (click)="isHidden = !isHidden;">Toggle Visibility</button>
-<hr>
+<p appBasicHighlight>App Basic Highlight Example</p>
+<p appBetterHighlight defaultColor="orange" highlightColor="grey">App Better Highlight Example</p>
+<input type="checkbox" [(ngModel)]="isHidden"> {{isHidden}}
+<select [(ngModel)]="value">
+  <option [value]="1">1</option>
+  <option [value]="2">2</option>
+  <option [value]="3">3</option>
+  <option [value]="4">Nothing</option>
+</select> {{ value }}
+<p *appUnless="isHidden">Example using the 'unless' directive</p>
+<div [ngSwitch]="value">
+  <p *ngSwitchCase="1">You selected 1.</p>
+  <p *ngSwitchCase="2">You selected 2.</p>
+  <p *ngSwitchCase="3">You selected 3 .</p>
+  <p *ngSwitchDefault>You selected the default ngSwitch value.</p>
+</div>

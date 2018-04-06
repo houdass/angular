@@ -51,18 +51,18 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 # Structure
 
 - The basics
-- Components & Databinding
+- Components and Databinding
 - Directives
-- Services & Dependency Injection
+- Services and Dependency Injection
 - Routing
 - Observables
 - Forms
 - Pipes
 - Http
 - Authentication
-- Optimizations & NgModules
+- Optimizations and NgModules
 - Deployment
-- Animation & Testing
+- Animation and Testing
 
 # Adding Bootstrap
 
@@ -91,10 +91,21 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 
 # *ngIf with an else condition
 - `<p *ngIf="isVisible; else noCondition">My message if true</p>`
-- `<ng-template #noCondition><p>My message if false<p></ng-template>
+- `<ng-template #noCondition><p>My message if false<p></ng-template>`
   
 # *ngFor (Getting the index)
 - `<p *ngFor="let item of items; let i = index">{{i}} - {{item.name}}</p>`
 - Or, `<p *ngFor="let item of items; index as i">{{i}} - {{item.name}}</p>`
 
+# Encapsulation
+- **encapsulation: ViewEncapsulation.Emulated** => Emulate Native scoping of styles by adding an attribute containing surrogate id to the Host Element and pre-processing the style rules provided via styles or styleUrls, and adding the new Host Element attribute to all selectors, This is the default option.
+- **encapsulation: ViewEncapsulation.Native** => Use the native encapsulation mechanism of the renderer.
+- **encapsulation: ViewEncapsulation.None** => Don't provide any template or style encapsulation.
 
+# Template reference variables
+- @ViewChild
+    * `<p #text>Hello World</p>` or `<p ref-text>Hello World</p>`
+    * `@ViewChild('text') text: ElementRef;` 
+    * `ngAfterViewInit() {
+         console.log(this.text.nativeElement.textContent);
+       }`
