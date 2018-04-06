@@ -158,20 +158,29 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
   * @Directive({
       selector: '[appBasicHighlight]'
     })
-  * Using ElementRef (`<p appBasicHighlight>App Basic Highlight Example</p>`)
+  * ElementRef (`<p appBasicHighlight>App Basic Highlight Example</p>`)
     * constructor(private elementRef: ElementRef) {}
         
       ngOnInit() {
         this.elementRef.nativeElement.style.backgroundColor = 'green';
       }
-    * Using Renderer (`<p appBetterHighlight>App Better Highlight Example</p>`)
-      * constructor(private elRef: ElementRef, private renderer: Renderer2) {}
-      * ngOnInit() {
+  * Renderer (`<p appBetterHighlight>App Better Highlight Example</p>`)
+    * constructor(private elRef: ElementRef, private renderer: Renderer2) {}
+    * ngOnInit() {
           this.renderer.setStyle(this.elRef.nativeElement, 'backgroundColor', 'blue');
         }
-    * Using @HostBinding
-      * @HostBinding('style.backgroundColor') backgroundColor;
-      * ngOnInit() {
-          this.backgroundColor = this.defaultColor;
-        }    
-    
+  * @HostBinding
+    * @HostBinding('style.backgroundColor') backgroundColor;
+    * ngOnInit() {
+        this.backgroundColor = 'blue';
+      }    
+  * @HostListener
+    * @HostListener('mouseenter')
+        mouseenter(eventData: Event) {
+          this.backgroundColor = this.highlightColor;
+        }
+    * @Input
+      * @Input() highlightColor = 'transparent';
+      * `<p appBetterHighlight [highlightColor]="'blue'">App Better Highlight Example</p>`
+      * or, `<p appBetterHighlight highlightColor="blue">App Better Highlight Example</p>`  
+                 
