@@ -29,9 +29,9 @@ export class RecipesComponent implements OnInit,
   OnDestroy {
 
   selectedRecipe: Recipe;
-  message = 'This is a message';
+  /* message = 'This is a message';
   @ContentChild('contentExample') contentExample: ElementRef;
-  @ViewChild('viewExample') viewExample: ElementRef;
+  @ViewChild('viewExample') viewExample: ElementRef; */
 
   constructor(private recipeService: RecipeService) {
     console.log('### Constructor called! ###');
@@ -43,41 +43,41 @@ export class RecipesComponent implements OnInit,
     });
 
     // console.log('### View ngOnInit ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngOnInit ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngOnInit ###', this.contentExample.nativeElement.textContent);
   }
 
   ngOnChanges() {
     // console.log('### View ngOnChanges ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngOnChanges ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngOnChanges ###', this.contentExample.nativeElement.textContent);
   }
 
   ngDoCheck() {
     // console.log('### View ngDoCheck ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngDoCheck ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngDoCheck ###', this.contentExample.nativeElement.textContent);
   }
 
   ngAfterContentInit() {
     // console.log('### View ngAfterContentInit ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngAfterContentInit ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngAfterContentInit ###', this.contentExample.nativeElement.textContent);
   }
 
   ngAfterContentChecked() {
     // console.log('### View ngAfterContentChecked ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngAfterContentChecked ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngAfterContentChecked ###', this.contentExample.nativeElement.textContent);
   }
 
   ngAfterViewInit() {
     // console.log('### View ngAfterViewInit ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngAfterViewInit ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngAfterViewInit ###', this.contentExample.nativeElement.textContent);
   }
 
   ngAfterViewChecked() {
     // console.log('### View ngAfterViewChecked ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngAfterViewChecked ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngAfterViewChecked ###', this.contentExample.nativeElement.textContent);
   }
 
   ngOnDestroy() {
     // console.log('### View ngOnDestroy ###', this.viewExample.nativeElement.textContent);
-    console.log('### Content ngOnDestroy ###', this.contentExample.nativeElement.textContent);
+    // console.log('### Content ngOnDestroy ###', this.contentExample.nativeElement.textContent);
   }
 }

@@ -3,16 +3,17 @@
     <app-recipe-list></app-recipe-list>
   </div>
   <div class="col-md-7">
-    <app-recipe-detail
+    <router-outlet></router-outlet>
+    <!-- <app-recipe-detail
       *ngIf="selectedRecipe; else infoText  "
       [recipe]="selectedRecipe">
     </app-recipe-detail>
     <ng-template #infoText>
       <p>Please select a Recipe!</p>
-    </ng-template>
+    </ng-template> -->
   </div>
 </div>
--><ng-content select=".youness"></ng-content>
--><ng-content select=".sara"></ng-content>
--><ng-content select="p"></ng-content>
-<pre #viewExample>{{ message }}</pre>
+<!-- <ng-content select=".youness"></ng-content>
+<ng-content select=".sara"></ng-content>
+<ng-content select="p"></ng-content>
+<pre #viewExample>{{ message }}</pre> -->
