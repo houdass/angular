@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-5">
-    <app-recipe-list (recipeWasSelected)="selectedRecipe = $event"></app-recipe-list>
+    <app-recipe-list></app-recipe-list>
   </div>
   <div class="col-md-7">
     <app-recipe-detail
@@ -12,5 +12,7 @@
     </ng-template>
   </div>
 </div>
-<ng-content></ng-content>
+-><ng-content select=".youness"></ng-content>
+-><ng-content select=".sara"></ng-content>
+-><ng-content select="p"></ng-content>
 <pre #viewExample>{{ message }}</pre>

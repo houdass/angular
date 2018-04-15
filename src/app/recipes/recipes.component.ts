@@ -11,11 +11,13 @@ import { AfterContentChecked,
   OnInit,
   ViewChild } from '@angular/core';
 import {Recipe} from './recipe.model';
+import {RecipeService} from './recipe.service';
 
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.scss']
+  styleUrls: ['./recipes.component.scss'],
+  providers: [RecipeService]
 })
 export class RecipesComponent implements OnInit,
   OnChanges,
@@ -31,11 +33,15 @@ export class RecipesComponent implements OnInit,
   @ContentChild('contentExample') contentExample: ElementRef;
   @ViewChild('viewExample') viewExample: ElementRef;
 
-  constructor() {
+  constructor(private recipeService: RecipeService) {
     console.log('### Constructor called! ###');
   }
 
   ngOnInit() {
+    this.recipeService.recipeSelected.subscribe((recipe: Recipe) => {
+      this.selectedRecipe = recipe;
+    });
+
     // console.log('### View ngOnInit ###', this.viewExample.nativeElement.textContent);
     console.log('### Content ngOnInit ###', this.contentExample.nativeElement.textContent);
   }
