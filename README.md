@@ -184,3 +184,31 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
       * `<p appBetterHighlight [highlightColor]="'blue'">App Better Highlight Example</p>`
       * or, `<p appBetterHighlight highlightColor="blue">App Better Highlight Example</p>`  
                  
+# Services and Dependency Injection 
+ * When @Inject() is not present, Injector will use the type annotation of the parameter.
+ `constructor(@Inject('MyEngine') public engine: Engine) {}`
+ * The usage of providers would duplicate the provider instances. The duplication of providers would cause issues as they would shadow the root instances, which are probably meant to be singletons, Only the root AppModule should import your module. If another module or component imports it too, the app can generate multiple instances of a service.
+ * As a general rule, import modules with providers exactly once, preferably in the application's root module. That's also usually the best place to configure, wrap, and override them.
+ * Using Services for Cross-Component Communication
+   * Service : `statusUpdated = new EventEmitter<string>();`
+   * Component 1 : `this.accountsService.statusUpdated.emit(status);`
+   * Component 2 : `this.accountsService.statusUpdated
+                          .subscribe((status: string) => console.log(status));`
+ * @Injectable() lets Angular know that a class can be used with the dependency injector. 
+ * @Injectable() is not strictly required if the class has other Angular decorators on it or does not have any dependencies.   
+ * What is important is that any class that is going to be injected with Angular is decorated. However, best practice is to decorate injectables with @Injectable(), as it makes more sense to the reader.
+ * ```typescript
+    import { Injectable } from '@angular/core';
+    import { AuthService } from './auth-service';
+    import { AuthWidget } from './auth-widget';
+    import { ChatSocket } from './chat-socket';
+    
+    @Injectable()
+    export class ChatWidget {
+      constructor(
+        public authService: AuthService,
+        public authWidget: AuthWidget,
+        public chatSocket: ChatSocket) { }
+    }
+    ```            
+            
