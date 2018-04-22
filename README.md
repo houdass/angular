@@ -184,3 +184,192 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
       * `<p appBetterHighlight [highlightColor]="'blue'">App Better Highlight Example</p>`
       * or, `<p appBetterHighlight highlightColor="blue">App Better Highlight Example</p>`  
                  
+# Routing
+  * Setting up and Loading Routes
+      * import { RouterModule, Routes } from '@angular/router'; 
+      * <pre>const appRoutes: Routes = [
+          {
+            path: '',
+            redirectTo: '/recipes',
+            pathMatch: 'full'
+          },
+          {
+            path: 'recipes',
+            component: RecipesComponent
+          },
+          {
+            path: 'shopping-list',
+            component: ShoppingListComponent
+          }
+        ];
+        @NgModule({
+          imports: [RouterModule.forRoot(appRoutes)],
+          exports: [RouterModule]
+        })
+        export class AppRoutingModule {}</pre>
+  * Navigating with Router Links
+      * `<a routerLink="recipes">Recipes</a>`
+      * or, `<a [routerLink]="'recipes'">Recipes</a>`
+  * Styling Active Router Links
+      * `<li routerLinkActive="active"></li>`
+  * Navigating Programmatically
+      * constructor(private router: Router, private route: ActivatedRoute) {}
+      * `this.router.navigate(['new'], { relativeTo: this.route });`
+      
+  * Fetching Route Parameters
+      * constructor(private route: ActivatedRoute) {}
+      * `const id = +this.route.snapshot.params['id'];`
+  * Fetching Route Parameters Reactively
+      * <pre>this.route.params.subscribe((params) => {
+           this.id = +params['id'];
+         });</pre>
+         
+  * Passing Query Parameters and Fragments
+      * `<a [routerLink]="[server.id]"
+              [queryParams]="{ allowEdit: server.id === 3 ? '1' : '0' }"
+              fragment="loading"
+              *ngFor="let server of servers">
+              {{ server.name }}
+            </a>`
+            
+      * `this.router.navigate(['servers', id, 'edit'], { queryParams: { allowEdit: false }, fragment: 'loading'});`
+  * Retrieving Query Parameters and Fragments`
+      * <pre>this.route.queryParams.subscribe((queryParams) => {
+              this.allowEdit = queryParams['allowEdit'] === '1' ? true : false;
+        });
+        this.route.fragment.subscribe((fragment) => {
+              console.log(fragment);
+        });</pre>
+            
+  * Setting up Child (Nested) Routes  
+      * <pre>{
+          path: 'recipes',
+          component: RecipesComponent,
+          children: [
+            {
+              path: '',
+              component: RecipeStartComponent
+            },
+            {
+              path: 'new',
+              component: RecipeEditComponent
+            },
+            {
+              path: ':id',
+              component: RecipeDetailComponent
+            },
+            {
+              path: ':id/edit',
+              component: RecipeEditComponent
+            }
+          ]
+        }</pre>        
+  * Configuring the Handling of Query Parameters & Fragments    
+      * this.router.navigate(['edit'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
+      * this.router.navigate(['edit'], { relativeTo: this.route, preserveFragment: true });
+      
+  * Redirecting and Wildcard Routes
+      * { path: 'not-found', component: PageNotFoundComponent },
+        { path: '**', redirectTo: 'not-found' }
+  * Protecting Routes with canActivate and canActivateChild
+      * <pre>import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot} from '@angular/router';
+             import { Observable } from 'rxjs/Observable';
+             import {Injectable} from '@angular/core';
+             import {AuthService} from './auth.service';
+             
+             @Injectable()
+             export class AuthGuard implements CanActivate, CanActivateChild {
+             
+               constructor(private authService: AuthService,
+                           private router: Router) {}
+               canActivate(route: ActivatedRouteSnapshot,
+                           state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+                 return this.authService.isAuthenticated()
+                   .then((authenticated: boolean) => {
+                     if (authenticated) {
+                       return true;
+                     } else {
+                       this.router.navigate(['/']);
+                     }
+                   });
+               }
+             
+               canActivateChild(route: ActivatedRouteSnapshot,
+                           state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+                 return this.canActivate(route, state);
+               }
+             }</pre>
+      * <pre> {
+            path: 'servers',
+            component: ServersComponent,
+            // canActivate: [AuthGuard],
+            canActivateChild: [AuthGuard],
+            children: [
+               {
+                 path: ':id', component: ServerComponent, resolve: { server: ServerResolver }                  },
+               {
+                 path: ':id/edit', component: EditServerComponent, canDeactivate: [CanDeactivateGuard]
+               }
+            ]
+          } </pre>
+  * Controlling Navigation with canDeactivate
+      * <pre>
+      import {Observable} from 'rxjs/Observable';
+      import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
+      
+      export interface CanComponentDeactivate {
+        canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
+      }
+      
+      export class CanDeactivateGuard implements CanDeactivate<CanComponentDeactivate> {
+        canDeactivate(component: CanComponentDeactivate,
+                     currentState: ActivatedRouteSnapshot,
+                     currentRoute: RouterStateSnapshot,
+                     nextRoute?: RouterStateSnapshot
+                     ): Observable<boolean> | Promise<boolean> | boolean {
+          return component.canDeactivate();
+        }
+      }
+      </pre>
+      * export class EditServerComponent implements CanDeactivateGuard {}
+      * <pre>canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+            if (!this.allowEdit) {
+              return true;
+            }
+            if ((this.serverName !== this.server.name) || (this.serverStatus !== this.server.status) && !this.changesSaved) {
+              return confirm('Do you want to discard the changes?');
+            } else {
+              return true;
+            }
+          }</pre>
+  * Passing Static Data to a Route
+      * { path: 'not-found', component: ErrorPageComponent, data: { errorMessage: 'THIS IS AN ERROR!'} }
+      * `this.errorMessage = this.route.snapshot.data['errorMessage'];
+  * Resolving Dynamic Data with the resolve Guard
+      * { path: ':id', component: ServerComponent, resolve: { server: ServerResolver }}
+      * <pre>import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+             import {Server} from './server.model';
+             import {Observable} from 'rxjs/Observable';
+             import {ServersService} from './servers.service';
+             import {Injectable} from '@angular/core';
+             
+             @Injectable()
+             export class ServerResolver implements Resolve<Server> {
+             
+               constructor(private serversService: ServersService) {}
+             
+               resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Server> | Promise<Server> | Server {
+                 return this.serversService.getServer(+route.params['id']);
+               }
+             }
+         </pre>
+      * <pre>this.route.data.subscribe((data) => {
+              this.server = data['server'];
+            });</pre>
+  * Understanding Location Strategies
+      * <pre>@NgModule({
+          imports: [
+            RouterModule.forRoot(appRoutes, { useHash: false })
+          ],
+          exports: [RouterModule]
+        })</pre>
