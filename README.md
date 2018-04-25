@@ -342,22 +342,22 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
             ]
           } </pre>
   * Controlling Navigation with canDeactivate
-      * <pre>import {Observable} from 'rxjs/Observable';
-      import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
-      
-      export interface CanComponentDeactivate {
-        canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
-      }
-      
-      export class CanDeactivateGuard implements CanDeactivate<CanComponentDeactivate> {
-        canDeactivate(component: CanComponentDeactivate,
-                     currentState: ActivatedRouteSnapshot,
-                     currentRoute: RouterStateSnapshot,
-                     nextRoute?: RouterStateSnapshot
-                     ): Observable<boolean> | Promise<boolean> | boolean {
-          return component.canDeactivate();
-        }
-      }
+      * <pre> import {Observable} from 'rxjs/Observable';
+              import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
+
+              export interface CanComponentDeactivate {
+                canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
+              }
+
+              export class CanDeactivateGuard implements CanDeactivate<CanComponentDeactivate> {
+                canDeactivate(component: CanComponentDeactivate,
+                             currentState: ActivatedRouteSnapshot,
+                             currentRoute: RouterStateSnapshot,
+                             nextRoute?: RouterStateSnapshot
+                             ): Observable<boolean> | Promise<boolean> | boolean {
+                  return component.canDeactivate();
+                }
+              }
       </pre>
       * export class EditServerComponent implements CanDeactivateGuard {}
       * <pre>canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
