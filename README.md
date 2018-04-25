@@ -342,8 +342,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
             ]
           } </pre>
   * Controlling Navigation with canDeactivate
-      * <pre>
-      import {Observable} from 'rxjs/Observable';
+      * <pre>import {Observable} from 'rxjs/Observable';
       import {ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot} from '@angular/router';
       
       export interface CanComponentDeactivate {
@@ -373,7 +372,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
           }</pre>
   * Passing Static Data to a Route
       * { path: 'not-found', component: ErrorPageComponent, data: { errorMessage: 'THIS IS AN ERROR!'} }
-      * `this.errorMessage = this.route.snapshot.data['errorMessage'];
+      * `this.errorMessage = this.route.snapshot.data['errorMessage'];`
   * Resolving Dynamic Data with the resolve Guard
       * { path: ':id', component: ServerComponent, resolve: { server: ServerResolver }}
       * <pre>import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
