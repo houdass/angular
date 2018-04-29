@@ -695,7 +695,10 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
                  gender: 'male',
                  hobbies: []
                });
-               this.signupForm.setControl('hobbies', new FormArray([new FormControl('Programming', Validators.required);]));
+               this.signupForm.setControl('hobbies', new FormArray([
+                 new FormControl('Programming', Validators.required),
+                 new FormControl('Hello World', Validators.required)
+               ]));
             </pre>
           * <pre>this.signupForm.patchValue({
                user: {
