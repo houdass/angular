@@ -403,5 +403,303 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
           exports: [RouterModule]
         })</pre>
            
-            
-
+# Observables
+  * Interval
+      * import {Observable} from 'rxjs/Observable';
+      * import 'rxjs/add/observable/interval'; 
+      * const myNumbers = Observable.interval(1000);
+      * myNumbers.subscribe((number: number) => {
+          console.log(number);
+        });   
+  * Observable.create
+      * import {Observer} from 'rxjs/Observer';
+      * <pre>const myObservable = Observable.create((observer: Observer<string>) => {
+           setTimeout(() => {
+             observer.next('After 1000');
+           }, 1000);
+           setTimeout(() => {
+             observer.next('After 2000');
+           }, 2000);
+           setTimeout(() => {
+             // observer.next('After 3000');
+             // observer.error('There is a problem here !!!');
+             observer.complete();
+           }, 3000);
+           setTimeout(() => {
+             observer.next('After 4000');
+           }, 4000);
+        });</pre>     
+      * <pre>this.myObservableSubscription = myObservable.subscribe(
+            (data: string) => { console.log(data); },
+            (error: string) => { console.log(error); },
+            () => { console.log('completed'); }
+        );</pre>
+  * Unsubscribe
+      * myNumbersSubscription: Subscription;
+      * <pre>const myNumbers = Observable.interval(1000);
+        this.myNumbersSubscription = myNumbers.subscribe((number: number) => {
+           console.log(number);
+        });</pre
+      * <pre>ngOnDestroy() {
+            this.myNumbersSubscription.unsubscribe();
+        }</pre>
+# Forms
+   * Template-Driven (Angular infers the form object from the DOM)
+      * Creating the Form and Registering the Controls
+        * import { FormsModule } from '@angular/forms';
+        * `imports: [FormsModule]`
+        * `<input class="form-control"
+                  ngModel
+                  name="name">
+      * Submitting and Using the Form
+        * `<form (submit)="onSubmit(f)" #f="ngForm">`
+        * <pre>onSubmit(form: NgForm) {
+          console.log(form);
+          }</pre>
+      * Accessing the Form with @ViewChild
+        * @ViewChild('f') myform: NgForm;
+        * <pre>onSubmit() {
+             console.log(this.myform);
+          }</pre>  
+      * Adding Validation to check User Input
+        * `<input type="email"
+                 class="form-control"
+                 ngModel
+                 name="email"
+                 required
+                 email>`
+      * Using the Form State
+        * <pre>input.ng-invalid.ng-touched {
+              border: 1px red solid;
+          }</pre>
+      * Outputting Validation Error Messages
+        * `<input type="email"
+                  class="form-control"
+                  ngModel
+                  name="email"
+                  required
+                  email
+                  #email="ngModel">` 
+        * `<span class="help-block" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>`
+      * Set Default Values with ngModel Property Binding
+        * `<input class="form-control"
+                  ngModel="Default name"
+                  name="name"
+                  required>`
+        * Or, `<select class="form-control"
+                       [ngModel]="defaultQuestion"
+                       name="question">
+                 <option value="pet">Your first Pet?</option>
+                 <option value="teacher">Your first teacher?</option>
+               </select>`
+        * defaultQuestion = 'teacher';
+      * Using ngModel with Two-Way-Binding
+        * `<textarea rows="3"
+                     class="form-control"
+                     name="answer"
+                     [(ngModel)]="answer"></textarea>`
+        * <p>Your replay: {{ answer }}</p>
+      * Grouping Form Controls
+        * `<div ngModelGroup="user"
+               #user="ngModelGroup">
+              <div class="form-group">
+                <label for="name">Username</label>
+                <input id="name"
+                       class="form-control"
+                       ngModel="Default name"
+                       name="name"
+                       required>
+              </div>
+              <div class="form-group">
+                <label for="email">Mail</label>
+                <input type="email"
+                       id="email"
+                       class="form-control"
+                       ngModel
+                       name="email"
+                       required
+                       email
+                       #email="ngModel">
+              </div>
+              <span class="help-block" *ngIf="!user.valid && user.touched">User is invalid</span>
+            </div>`
+      * Handling Radio Buttons
+        * genders = ['male', 'female'];
+        * `<div class="radio" *ngFor="let gender of genders">
+             <label>
+               <input type="radio"
+                      name="gender"
+                      ngModel="male"
+                      [value]="gender"> {{ gender }}
+             </label>
+           </div>` 
+      * Setting and Patching Form Values
+        * <pre>this.myform.setValue({
+             user: {
+               name: 'Angular',
+               email: 'angular@google.com'
+             },
+             question: 'pet',
+             answer: '',
+             gender: 'female'
+           }); </pre>
+        * or, this.form.myform.setValue({});
+        * <pre>this.myform.form.patchValue({
+            user: {
+              name: 'Houdass'
+            }
+          });</pre>
+      * Resetting Forms
+        * this.myform.reset();   
+   * Reactive (Form is created programmatically and synchronized with the DOM)
+      * Setup
+          * import { ReactiveFormsModule } from '@angular/forms';
+          * import { FormGroup } from '@angular/forms';
+          * signupForm: FormGroup;
+      * Creating a Form in Code
+          * <pre>ngOnInit() {
+               this.signupForm = new FormGroup({
+                   name: new FormControl(null),
+                   email: new FormControl(null),
+                   gender: new FormControl('male')
+               });
+             }</pre>
+      * Syncing HTML and Form
+          * `<form [formGroup]="signupForm">`
+          * `<input formControlName="name"
+                    class="form-control">`
+      * Submitting the Form
+          * `<form [formGroup]="signupForm" (submit)="onSubmit()">`
+          * <pre>onSubmit() {
+               console.log(this.signupForm);
+             }</pre>
+      * Adding Validation
+          * <pre> ngOnInit() {
+               this.signupForm = new FormGroup({
+                   name: new FormControl(null, Validators.required),
+                   email: new FormControl(null, [Validators.required, Validators.email]),
+                   gender: new FormControl('male')
+               });
+             }</pre>
+      * Getting Access to Controls
+          * `<span *ngIf="!signupForm.get('name').valid && signupForm.get('name').touched" class="help-block">Please enter a valid name!</span>`
+          * `<span *ngIf="!signupForm.valid && signupForm.touched" class="help-block">Please enter valid data!</span>`
+      * Grouping Controls
+          * <pre>ngOnInit() {
+               this.signupForm = new FormGroup({
+                   user: new FormGroup({
+                     name: new FormControl(null, Validators.required),
+                     email: new FormControl(null, [Validators.required, Validators.email])
+                   }),
+                   gender: new FormControl('male')
+               });
+             }</pre>
+          * `<div formGroupName="user">
+                       <div class="form-group">
+                         <label for="name">Name</label>
+                         <input id="name"
+                                formControlName="name"
+                                class="form-control">
+                         <span *ngIf="!signupForm.get('user.name').valid && signupForm.get('user.name').touched" class="help-block">Please enter a valid name!</span>
+                       </div>
+                       <div class="form-group">
+                         <label for="email">Email</label>
+                         <input id="email"
+                                formControlName="email"
+                                class="form-control">
+                         <span *ngIf="!signupForm.get('user.email').valid && signupForm.get('user.email').touched" class="help-block">Please enter a valid email!</span>
+                       </div>
+                     </div>`
+      * Arrays of Form Controls (FormArray)
+          * `<div formArrayName="hobbies">
+                       <h4>Your hobbies</h4>
+                       <button class="btn btn-default"
+                               type="button"
+                               (click)="onAddHobby()">Add Hobby</button>
+                       <div class="form-group"
+                            *ngFor="let hobbyControl of signupForm.get('hobbies').controls; let i = index">
+                         <input class="form-control" [formControlName]="i">
+                       </div>
+                     </div>`
+          * <pre>this.signupForm = new FormGroup({
+                 user: new FormGroup({
+                   name: new FormControl(null, Validators.required),
+                   email: new FormControl(null, [Validators.required, Validators.email])
+                 }),
+                 gender: new FormControl('male'),
+                 hobbies: new FormArray([])
+             });</pre>
+          * <pre>onAddHobby() {
+               const control = new FormControl(null, Validators.required);
+               (<FormArray>this.signupForm.get('hobbies')).push(control);
+             }</pre>
+       * Creating Custom Validators
+          * <pre>this.signupForm = new FormGroup({
+                 user: new FormGroup({
+                   name: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+                   email: new FormControl(null, [Validators.required, Validators.email])
+                 }),
+                 gender: new FormControl('male'),
+                 hobbies: new FormArray([])
+             });</pre>
+          * <pre>forbiddenNames(control: FormControl): { [s: string]: boolean } {
+               if (this.forbiddenNamesList.indexOf(control.value) !== -1 ) {
+                 return { 'nameIsForbidden': true };
+               }
+               return null;
+             }</pre>
+       * Using Error Codes
+          * `<span *ngIf="!signupForm.get('user.name').valid && signupForm.get('user.name').touched"
+                               class="help-block">
+                           <span *ngIf="signupForm.get('user.name').errors.required">The name is required</span>
+                           <span *ngIf="signupForm.get('user.name').errors.nameIsForbidden">This name is forbidden</span>
+                         </span>`
+       * Creating a Custom Async Validator
+          * <pre>this.signupForm = new FormGroup({
+                 user: new FormGroup({
+                   name: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+                   email: new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails)
+                 }),
+                 gender: new FormControl('male'),
+                 hobbies: new FormArray([])
+             });</pre>
+          * <pre>forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+               return new Promise<any>((resolve, reject) => {
+                 setTimeout(() => {
+                   if (control.value === 'test@test.com') {
+                     resolve({'emailIsForbidden': true});
+                   } else {
+                     resolve(null);
+                   }
+                 }, 1500);
+               });
+             }</pre>
+          * `<span *ngIf="signupForm.get('user.email').pending" class="help-block">Loading .. please wait!</span>`
+       * Reacting to Status or Value Changes
+          * <pre>this.signupForm.statusChanges.subscribe((status) => {
+               console.log(status);
+             });</pre> 
+          * this.signupForm.status // VALID/INVALID/PENDING  
+          * <pre>this.signupForm.valueChanges.subscribe((status) => {
+              console.log(status);
+            });</pre>     
+          * this.signupForm.value   
+          
+       * Resetting Forms
+          * this.signupForm.reset({gender: 'female'});   
+       * Setting and Patching Values  
+          * <pre>this.signupForm.setValue({
+                 user: {
+                   name: 'Houdass Youness',
+                   email: 'Youness@houdass.com'
+                 },
+                 gender: 'male',
+                 hobbies: []
+               });
+               this.signupForm.setControl('hobbies', new FormArray([new FormControl('Programming', Validators.required);]));
+            </pre>
+          * <pre>this.signupForm.patchValue({
+               user: {
+                 name: 'Angular CLI'
+               }
+             });</pre>
