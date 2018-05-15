@@ -447,9 +447,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
       * Creating the Form and Registering the Controls
         * import { FormsModule } from '@angular/forms';
         * `imports: [FormsModule]`
-        * `<input class="form-control"
-                  ngModel
-                  name="name">
+        * `<input class="form-control" ngModel name="name">`
       * Submitting and Using the Form
         * `<form (submit)="onSubmit(f)" #f="ngForm">`
         * <pre>onSubmit(form: NgForm) {
@@ -705,3 +703,43 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
                  name: 'Angular CLI'
                }
              });</pre>
+# Pipes
+  * Creating a Custom Pipe
+    * <pre>import { Pipe, PipeTransform } from '@angular/core';
+           
+           @Pipe({
+             name: 'shorten'
+           })
+           export class ShortenPipe implements PipeTransform {
+             transform(value: any) {
+               if (value.length > 10) {
+                 return value.substr(0, 10) + '...';
+               }
+               return value;
+             }
+           }</pre>
+    * `{{ text | shorten }}`
+  * Parametrizing a Custom Pipe 
+    * <pre>import { Pipe, PipeTransform } from '@angular/core';
+           
+           @Pipe({
+             name: 'shorten'
+           })
+           export class ShortenPipe implements PipeTransform {
+             transform(value: any, limit: number) {
+               if (value.length > limit) {
+                 return value.substr(0, limit) + '...';
+               }
+               return value;
+             }
+           }
+      </pre>
+    * `{{ text | shorten:5 }}`
+  * Pure and Impure Pipes
+  * Async Pipe
+    * <pre>appStatus = new Promise((resolve) => {
+               setTimeout(() => {
+                 resolve('stable');
+               }, 2000);
+             })</pre>
+    * `{{ appStatus | async }}`

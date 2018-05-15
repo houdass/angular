@@ -20,8 +20,7 @@ import {Subscription} from 'rxjs/Subscription';
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
-  styleUrls: ['./recipes.component.scss'],
-  providers: [RecipeService]
+  styleUrls: ['./recipes.component.scss']
 })
 export class RecipesComponent implements OnInit,
   OnChanges,
