@@ -447,9 +447,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
       * Creating the Form and Registering the Controls
         * import { FormsModule } from '@angular/forms';
         * `imports: [FormsModule]`
-        * `<input class="form-control"
-                  ngModel
-                  name="name">
+        * `<input class="form-control" ngModel name="name">`
       * Submitting and Using the Form
         * `<form (submit)="onSubmit(f)" #f="ngForm">`
         * <pre>onSubmit(form: NgForm) {
@@ -678,7 +676,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
           * <pre>this.signupForm.statusChanges.subscribe((status) => {
                console.log(status);
              });</pre> 
-          * this.signupForm.status // VALID/INVALID/PENDING  
+          * this.signupForm.status //VALID/INVALID/PENDING  
           * <pre>this.signupForm.valueChanges.subscribe((status) => {
               console.log(status);
             });</pre>     
@@ -705,3 +703,57 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
                  name: 'Angular CLI'
                }
              });</pre>
+# Pipes
+  * Creating a Custom Pipe
+    * <pre>import { Pipe, PipeTransform } from '@angular/core';
+           
+           @Pipe({
+             name: 'shorten'
+           })
+           export class ShortenPipe implements PipeTransform {
+             transform(value: any) {
+               if (value.length > 10) {
+                 return value.substr(0, 10) + '...';
+               }
+               return value;
+             }
+           }</pre>
+    * `{{ text | shorten }}`
+  * Parametrizing a Custom Pipe 
+    * <pre>import { Pipe, PipeTransform } from '@angular/core';
+           
+           @Pipe({
+             name: 'shorten'
+           })
+           export class ShortenPipe implements PipeTransform {
+             transform(value: any, limit: number) {
+               if (value.length > limit) {
+                 return value.substr(0, limit) + '...';
+               }
+               return value;
+             }
+           }
+      </pre>
+    * `{{ text | shorten:5 }}`
+  * Pure and Impure Pipes
+  * Async Pipe
+    * <pre>appStatus = new Promise((resolve) => {
+               setTimeout(() => {
+                 resolve('stable');
+               }, 2000);
+             })</pre>
+    * `{{ appStatus | async }}`
+# Http
+# Authentication and Route Protection
+# Angular Modules and Optimizing Apps
+  * You can call the same module into modules, you can provide the same provider into modules, but you must not duplicate your declarations
+  * Using Ahead-of-Time Compilation (Jit vs. Aot)
+    * Essentially we are compiling the code twice with angular2 apps, once when we convert TS to JS and then when the browser converts JS to binary.
+      
+      While we cannot control the latter, we can however control when the compilation from TS to JS is performed.
+      
+      With angular2, if you go with JIT (which is default), both the compiles happen after the code is loaded in the browser (i.e. TS -> JS -> binary). Not only is it an additional overhead to do the TS -> JS compilation on the fly on the browser, but also, the angular2 compiler is almost half the size of the angular2 package so if we avoid this, we can reduce the size of the payload significantly.
+      
+      AOT precomplies TS code to JS, reducing the compilation time as well as the size of the code, by eradicating the need for the angular compiler which makes up 50% of the code
+  * Preloading Lazy Loaded Routes       
+    * `{ path: 'recipes', loadChildren: './recipes/recipes.module#RecipesModule'}`

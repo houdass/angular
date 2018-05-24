@@ -1,37 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { BasicHighlightDirective } from './shared/directives/basic-highlight.directive';
 import { BetterHighlightDirective } from './shared/directives/better-highlight.directive';
 import { UnlessDirective } from './shared/directives/unless.directive';
-import { DropdownDirective } from './shared/directives/dropdown.directive';
-import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { AppRoutingModule } from './app-routing.module';
-import { RecipesModule } from './recipes/recipes.module';
+import { HttpModule } from '@angular/http';
+import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module';
+import { AuthModule } from './auth/auth.module';
+import { ShoppingListModule } from './shopping-list/shopping-list.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    ShoppingListComponent,
-    ShoppingEditComponent,
     BasicHighlightDirective,
     BetterHighlightDirective,
-    UnlessDirective,
-    DropdownDirective
+    UnlessDirective
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    HttpModule,
     AppRoutingModule,
-    RecipesModule
+    ShoppingListModule,
+    AuthModule,
+    SharedModule,
+    CoreModule
   ],
-  providers: [ShoppingListService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
