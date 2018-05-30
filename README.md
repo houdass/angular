@@ -757,3 +757,49 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
       AOT precomplies TS code to JS, reducing the compilation time as well as the size of the code, by eradicating the need for the angular compiler which makes up 50% of the code
   * Preloading Lazy Loaded Routes       
     * `{ path: 'recipes', loadChildren: './recipes/recipes.module#RecipesModule'}`
+
+# HttpClient
+  * <pre>import { HttpClientModule } from '@angular/common/http';</pre>
+  * <pre>imports: [
+       BrowserModule,
+       HttpClientModule,
+       ...
+     ]</pre>
+  * <pre>
+     const params = new HttpParams().append('auth', 'some-token');
+     const headers = const headers = new HttpHeaders().append('Authorization', 'Bearer Ad5jar8eq ..');
+     return this.httpClient.get<Recipe[]>(this.url , {
+      observe: 'body', // response, events, but default: body 
+      responseType: 'json', // text, arraybuffer, blob but default: json
+      params,
+      headers
+     })</pre>
+  * To make a request with progress events enabled, you can create an instance of HttpRequest with the reportProgress option set true to enable tracking of progress events.
+  * <pre>const req = new HttpRequest('PUT', this.url, this.recipeService.getRecipes(), {
+       reportProgress: true
+     });
+     return this.httpClient.request(req);</pre>
+  * Interceptors
+    * <pre>import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+      import { Observable } from 'rxjs/Observable';
+      import { Injectable } from '@angular/core';
+      import { AuthService } from '../auth/auth.service';
+         
+      @Injectable()
+      export class AuthInterceptor implements HttpInterceptor {
+         
+        constructor(private authService: AuthService) {}
+         
+        intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+          console.log('Intercepted', req);
+          const copiedReq = req.clone({ params: req.params.set('auth', this.authService.getToken()) });
+          return next.handle(copiedReq);
+        }
+      }</pre>
+      
+    * <pre>providers: [
+       ...
+       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+       { provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }
+      ]</pre>
+           
