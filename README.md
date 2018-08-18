@@ -69,7 +69,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 - npm i -S bootstrap
 - Open file .angular-cli.json
 - Add ../node_modules/bootstrap/dist/css/bootstrap.min.css to `styles` node
-- For Angular 6, `@import "~bootstrap/dist/css/bootstrap.min.css"; to `styles.scss` file
+- From Angular 6, add `@import "~bootstrap/dist/css/bootstrap.min.css"; to `styles.scss` file
 
 # Component selectors
 
