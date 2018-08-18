@@ -39,7 +39,7 @@ Angular is a Javascript framework which allows you to create reactive Single-pag
 
 - npm i -g @angular/cli
 - ng new my-dream-app
-- ng new my-dream-app --style=scss|sass
+- ng new my-dream-app --style=scss|sass|less (default: css)
 - cd my-dream-app
 - ng serve
 - https://www.sitepoint.com/ultimate-angular-cli-reference/
@@ -69,6 +69,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 - npm i -S bootstrap
 - Open file .angular-cli.json
 - Add ../node_modules/bootstrap/dist/css/bootstrap.min.css to `styles` node
+- For Angular 6, `@import "~bootstrap/dist/css/bootstrap.min.css"; to `styles.scss` file
 
 # Component selectors
 
@@ -77,7 +78,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 - selector: `'[app-servers]'` => `<div app-servers></div>`
 
 # Databinding
-- String interpolation {{ data }}
+- String interpolation `{{ data }}`
 - Property binding `[property]="data"` or `bind-property="data"` for example `<button [disabled]="isDisabled"> ...`
 - Event Binding `(event)="callback()"` or `on-click="callback()"`
 - Two-way binding (banana in the box) `[(data)]`
@@ -91,7 +92,11 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 
 # *ngIf with an else condition
 - `<p *ngIf="isVisible; else noCondition">My message if true</p>`
-- `<ng-template #noCondition><p>My message if false<p></ng-template>`
+  `<ng-template #noCondition><p>My message if false<p></ng-template>`
+- Or, for more consistency
+- `<p *ngIf="isVisible; then condition else noCondition"></p>`
+  `<ng-template #condition><p>My message if true<p></ng-template>`
+  `<ng-template #noCondition><p>My message if false<p></ng-template>`
   
 # *ngFor (Getting the index)
 - `<p *ngFor="let item of items; let i = index">{{i}} - {{item.name}}</p>`
@@ -676,7 +681,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
           * <pre>this.signupForm.statusChanges.subscribe((status) => {
                console.log(status);
              });</pre> 
-          * this.signupForm.status //VALID/INVALID/PENDING  
+          * this.signupForm.status // VALID/INVALID/PENDING  
           * <pre>this.signupForm.valueChanges.subscribe((status) => {
               console.log(status);
             });</pre>     
@@ -743,63 +748,3 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
                }, 2000);
              })</pre>
     * `{{ appStatus | async }}`
-# Http
-# Authentication and Route Protection
-# Angular Modules and Optimizing Apps
-  * You can call the same module into modules, you can provide the same provider into modules, but you must not duplicate your declarations
-  * Using Ahead-of-Time Compilation (Jit vs. Aot)
-    * Essentially we are compiling the code twice with angular2 apps, once when we convert TS to JS and then when the browser converts JS to binary.
-      
-      While we cannot control the latter, we can however control when the compilation from TS to JS is performed.
-      
-      With angular2, if you go with JIT (which is default), both the compiles happen after the code is loaded in the browser (i.e. TS -> JS -> binary). Not only is it an additional overhead to do the TS -> JS compilation on the fly on the browser, but also, the angular2 compiler is almost half the size of the angular2 package so if we avoid this, we can reduce the size of the payload significantly.
-      
-      AOT precomplies TS code to JS, reducing the compilation time as well as the size of the code, by eradicating the need for the angular compiler which makes up 50% of the code
-  * Preloading Lazy Loaded Routes       
-    * `{ path: 'recipes', loadChildren: './recipes/recipes.module#RecipesModule'}`
-
-# HttpClient
-  * <pre>import { HttpClientModule } from '@angular/common/http';</pre>
-  * <pre>imports: [
-       BrowserModule,
-       HttpClientModule,
-       ...
-     ]</pre>
-  * <pre>
-     const params = new HttpParams().append('auth', 'some-token');
-     const headers = const headers = new HttpHeaders().append('Authorization', 'Bearer Ad5jar8eq ..');
-     return this.httpClient.get<Recipe[]>(this.url , {
-      observe: 'body', // response, events, but default: body 
-      responseType: 'json', // text, arraybuffer, blob but default: json
-      params,
-      headers
-     })</pre>
-  * To make a request with progress events enabled, you can create an instance of HttpRequest with the reportProgress option set true to enable tracking of progress events.
-  * <pre>const req = new HttpRequest('PUT', this.url, this.recipeService.getRecipes(), {
-       reportProgress: true
-     });
-     return this.httpClient.request(req);</pre>
-  * Interceptors
-    * <pre>import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-      import { Observable } from 'rxjs/Observable';
-      import { Injectable } from '@angular/core';
-      import { AuthService } from '../auth/auth.service';
-         
-      @Injectable()
-      export class AuthInterceptor implements HttpInterceptor {
-         
-        constructor(private authService: AuthService) {}
-         
-        intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-          console.log('Intercepted', req);
-          const copiedReq = req.clone({ params: req.params.set('auth', this.authService.getToken()) });
-          return next.handle(copiedReq);
-        }
-      }</pre>
-      
-    * <pre>providers: [
-       ...
-       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-       { provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }
-      ]</pre>
-           
