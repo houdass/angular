@@ -103,7 +103,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 - Or, `<p *ngFor="let item of items; index as i">{{i}} - {{item.name}}</p>`
 
 # Encapsulation
-- **encapsulation: ViewEncapsulation.Emulated** => Emulate Native scoping of styles by adding an attribute containing surrogate id to the Host Element and pre-processing the style rules provided via styles or styleUrls, and adding the new Host Element attribute to all selectors, This is the default option.
+- **encapsulation: ViewEncapsulation.Emulated** => Emulate native scoping of styles by adding an attribute containing surrogate id to the host element and pre-processing the style rules provided via styles or styleUrls, and adding the new host element attribute to all selectors, this is the default option.
 - **encapsulation: ViewEncapsulation.Native** => Use the native encapsulation mechanism of the renderer.
 - **encapsulation: ViewEncapsulation.None** => Don't provide any template or style encapsulation.
 
@@ -193,13 +193,14 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 # Services and Dependency Injection 
  * When @Inject() is not present, Injector will use the type annotation of the parameter.
  `constructor(@Inject('MyEngine') public engine: Engine) {}`
- * The usage of providers would duplicate the provider instances. The duplication of providers would cause issues as they would shadow the root instances, which are probably meant to be singletons, Only the root AppModule should import your module. If another module or component imports it too, the app can generate multiple instances of a service.
- * As a general rule, import modules with providers exactly once, preferably in the application's root module. That's also usually the best place to configure, wrap, and override them.
+ * @Inject() is a manual mechanism for letting Angular know that a parameter must be injected. It can be used like so:
+ `constructor(@Inject(ChatWidget) private chatWidget) {}`
+ * The usage of providers would duplicate the provider instances, the duplication of providers would cause issues as they would shadow the root instances, which are probably meant to be singletons, only the root AppModule should import your module, if another module or component imports it too, the app can generate multiple instances of a service.
+ * As a general rule, import modules with providers exactly once, preferably in the application's root module, that's also usually the best place to configure, wrap, and override them.
  * Using Services for Cross-Component Communication
    * Service : `statusUpdated = new EventEmitter<string>();`
    * Component 1 : `this.accountsService.statusUpdated.emit(status);`
-   * Component 2 : `this.accountsService.statusUpdated
-                          .subscribe((status: string) => console.log(status));`
+   * Component 2 : `this.accountsService.statusUpdated.subscribe((status: string) => console.log(status));`
  * @Injectable() lets Angular know that a class can be used with the dependency injector. 
  * @Injectable() is not strictly required if the class has other Angular decorators on it or does not have any dependencies.   
  * What is important is that any class that is going to be injected with Angular is decorated. However, best practice is to decorate injectables with @Injectable(), as it makes more sense to the reader.
@@ -267,7 +268,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
             </a>`
             
       * `this.router.navigate(['servers', id, 'edit'], { queryParams: { allowEdit: false }, fragment: 'loading'});`
-  * Retrieving Query Parameters and Fragments`
+  * Retrieving Query Parameters and Fragments
       * <pre>this.route.queryParams.subscribe((queryParams) => {
               this.allowEdit = queryParams['allowEdit'] === '1' ? true : false;
         });
@@ -362,8 +363,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
                              ): Observable<boolean> | Promise<boolean> | boolean {
                   return component.canDeactivate();
                 }
-              }
-      </pre>
+              }</pre>
       * export class EditServerComponent implements CanDeactivateGuard {}
       * <pre>canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
             if (!this.allowEdit) {
