@@ -80,7 +80,7 @@ https://medium.com/wizardnet972/hot-module-replacement-with-angular-cli-5fc7a3ae
 # Databinding
 - String interpolation `{{ data }}`
 - Property binding `[property]="data"` or `bind-property="data"` for example `<button [disabled]="isDisabled"> ...`
-- Event Binding `(event)="callback()"` or `on-click="callback()"`
+- Event Binding `(event)="callback()"` or `on-event="callback()"`
 - Two-way binding (banana in the box) `[(data)]`
 - NOTE : 
     - `<p [innerText]="data"></p>` is equal to `<p>{{ data }}</p>`
