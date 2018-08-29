@@ -12,10 +12,7 @@ import { AfterContentChecked,
   ViewChild } from '@angular/core';
 import {Recipe} from './recipe.model';
 import {RecipeService} from './recipe.service';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/interval';
-import {Observer} from 'rxjs/Observer';
-import {Subscription} from 'rxjs/Subscription';
+import {interval, Observable, Observer, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-recipes',
@@ -43,7 +40,7 @@ export class RecipesComponent implements OnInit,
   }
 
   ngOnInit() {
-    const myNumbers = Observable.interval(1000);
+    const myNumbers = interval(1000);
     this.myNumbersSubscription = myNumbers.subscribe((number: number) => {
       console.log(number);
     });
